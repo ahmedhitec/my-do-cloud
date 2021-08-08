@@ -18,20 +18,14 @@ install-ingress:
 		service.beta.kubernetes.io/do-loadbalancer-hostname: personal-private-network.com
 	kubectl apply -f do-nginx-ingress-controller.yaml
     watch kubectl get services ingress-nginx-controller -n ingress-nginx -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
-install-helm:
-	#helm version 3 doesn't require server configration
-	#kubectl create serviceaccount tiller --namespace kube-system
-	#kubectl create -f tiller.yaml
-	#helm init --service-account tiller --upgrade
-	helm repo add jetstack https://charts.jetstack.io
-	
-deploy:
-	kubectl apply -R -f applications/
 
 install-cert-manager:
-	kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
-	kubectl label namespace kube-system certmanager.k8s.io/disable-validation="true"
-	helm install cert-manager --namespace kube-system jetstack/cert-manager
+	kubectl create namespace cert-manager
+	helm repo add jetstack https://charts.jetstack.io
+	helm repo update
+	helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
+
+
 
 install-cert-manager-issuers:
 	kubectl apply -f cert-manager/staging.yaml
