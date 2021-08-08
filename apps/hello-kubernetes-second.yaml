@@ -15,7 +15,7 @@ kind: Deployment
 metadata:
   name: hello-kubernetes-second
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: hello-kubernetes-second
@@ -30,10 +30,10 @@ spec:
         resources:
           requests:
             memory: "120Mi"
-            cpu: "500m"
+            cpu: "100m"
           limits:
             memory: "120Mi"
-            cpu: "500m"
+            cpu: "100m"
         ports:
         - containerPort: 8080
         env:
