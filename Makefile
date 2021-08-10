@@ -28,5 +28,4 @@ install-cert-manager:
 
 
 install-cert-manager-issuers:
-	kubectl apply -f cert-manager/staging.yaml
 	kubectl apply -f cert-manager/production.yaml
