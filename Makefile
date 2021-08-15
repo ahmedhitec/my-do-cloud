@@ -26,7 +26,7 @@ install-cert-manager:
 	helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
 
 install-cert-manager-issuers:
-	kubectl apply -f cert-manager/production.yaml
+	kubectl apply -f production.yaml
 
 create-ssh-secret:
     kubectl create secret generic ssh-key-secret --from-file="C:\Users\ahmed\.ssh\id_rsa.pub"
