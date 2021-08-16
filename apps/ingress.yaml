@@ -12,7 +12,7 @@ spec:
     - app2.personal-private-network.com
     secretName: hello-kubernetes-tls
   rules:
-  - host: "app1.personal-private-network.com"
+  - host: app1.personal-private-network.com
     http:
       paths:
       - pathType: Prefix
@@ -22,7 +22,7 @@ spec:
             name: hello-kubernetes-first
             port:
               number: 80
-  - host: "app2.personal-private-network.com"
+  - host: app2.personal-private-network.com
     http:
       paths:
       - pathType: Prefix
