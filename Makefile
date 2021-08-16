@@ -17,16 +17,21 @@ install-ingress:
 		service.beta.kubernetes.io/do-loadbalancer-name: 'main-lb'
 		service.beta.kubernetes.io/do-loadbalancer-hostname: personal-private-network.com
 	kubectl apply -f do-nginx-ingress-controller.yaml
-    watch kubectl get services ingress-nginx-controller -n ingress-nginx -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
+    kubectl get services ingress-nginx-controller -n ingress-nginx -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" -w
+	# Go directly to do admin account and point your domain to the LoadBalancer
 
 install-cert-manager:
-	kubectl create namespace cert-manager
 	helm repo add jetstack https://charts.jetstack.io
 	helm repo update
+	kubectl create namespace cert-manager
 	helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
 
 install-cert-manager-issuers:
-	kubectl apply -f production.yaml
+	kubectl apply -f production_issuer.yaml
+
+install-ingress-resource:
+	# make sure to point the domain to the LoadBalancer
+	kubectl apply -f apps/ingress.yaml
 
 create-ssh-secret:
     kubectl create secret generic ssh-key-secret --from-file="C:\Users\ahmed\.ssh\id_rsa.pub"
